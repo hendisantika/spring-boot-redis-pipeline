@@ -3,6 +3,8 @@ package com.hendisantika.redispipeline.config;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,5 +26,14 @@ public class RedisConfig {
 //        jedisConnectionFactory.setPassword("<server-password-here>");
         jedisConnectionFactory.afterPropertiesSet();
         return jedisConnectionFactory;
+    }
+
+    @Bean
+    public RedisTemplate<String, String> redisTemplate() {
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory());
+        redisTemplate.setDefaultSerializer(RedisSerializer.string());
+        redisTemplate.afterPropertiesSet();
+        return redisTemplate;
     }
 }
